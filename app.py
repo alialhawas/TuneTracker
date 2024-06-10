@@ -19,11 +19,12 @@ from fastapi.responses import RedirectResponse
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Load the ML model
-    ml_models["answer_to_everything"] = fake_answer_to_everything_ml_model
-    yield
-    # Clean up the ML models and release the resources
-    ml_models.clear()
+    pass
+    # # Load the ML model
+    # ml_models["answer_to_everything"] = fake_answer_to_everything_ml_model
+    # yield
+    # # Clean up the ML models and release the resources
+    # ml_models.clear()
 
 
 app = FastAPI(lifespan=lifespan)
@@ -31,11 +32,9 @@ app = FastAPI(lifespan=lifespan)
 
 
 
-
 @app.get("/fetch_data")
 def fetch_data():
-    return get
-
+    pass
 
 
 @app.get("/login")
@@ -44,7 +43,7 @@ def login():
     N = 16
 
     state = ''.join(random.choices(string.ascii_lowercase +
-							string.digits, k=N))
+							string.digits, k=N)) # random value for security reasons
 
     scope = 'user-read-private user-read-email'
 

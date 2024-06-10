@@ -1,17 +1,21 @@
 from typing import Dict
 from datetime import datetime, timedelta
 
-from database.redis.index import get_radis_con
+from database.redis.index import get_redis_connection
+from database.posgres.index import write_top_artists, write_top_songs
 
 import requests
 import os
 
 
-r = get_radis_con()
+redis_con = get_redis_connection()
 
 def gen_auth_token() -> tuple[str, datetime]:
     return 'none', datetime.now() # TODO genrate token 
 
+
+def test():
+    return 90
 
 def is_within_30_minutes(dt1: datetime, dt2: datetime) -> bool:
     time_difference = abs(dt1 - dt2)    
@@ -21,13 +25,13 @@ def is_within_30_minutes(dt1: datetime, dt2: datetime) -> bool:
 def write_auth_token(token_value:str) -> None:
     expiration_time = (datetime.now() + timedelta(hours=1 , minutes= 30)).isoformat()  
 
-    r.hset('auth_tokens', 'token', token_value)
-    r.hset('auth_tokens', 'expiration_time', expiration_time)
+    redis_con.hset('auth_tokens', 'token', token_value)
+    redis_con.hset('auth_tokens', 'expiration_time', expiration_time)
 
 
 def get_auth_token() -> tuple[str, datetime]:
-    token = r.hget('auth_tokens', 'token')
-    expiration_time = r.hget('auth_tokens', 'expiration_time')
+    token = redis_con.hget('auth_tokens', 'token')
+    expiration_time = redis_con.hget('auth_tokens', 'expiration_time')
 
     token = token.decode('utf-8') if token else None 
     expiration_time = expiration_time.decode('utf-8') if expiration_time else None

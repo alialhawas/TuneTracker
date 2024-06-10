@@ -3,8 +3,10 @@ import json
 import config 
 import os 
 
-from utils.index import get_token_header , get_top_artists
+from utils.index import get_token_header , get_top_artists , test
 
 
 
-print(get_top_artists(os.getenv['access_token']))
+
+
+print(test)
